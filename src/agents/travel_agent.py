@@ -5,6 +5,8 @@ from pydantic_ai.usage import Usage, UsageLimits
 from pydantic import BaseModel, Field
 import os
 from dotenv import load_dotenv
+from langsmith import traceable
+from langsmith.wrappers import wrap_openai
 
 from src.models.base import (
     TravelQuery, 
@@ -85,6 +87,7 @@ class TravelAgentSystem:
         self.recommendation_agent.tool(self._search_destinations)
         self.general_agent.tool(self._search_travel_info)
     
+    @traceable(run_type="chain", name="Process Travel Query")
     async def process_query(self, query: str) -> str:
         """Process a user query by determining its type and routing it to the appropriate handler."""
         # Determine query type based on keywords and context
@@ -95,6 +98,7 @@ class TravelAgentSystem:
         else:
             return await self._handle_general_query(query)
     
+    @traceable(run_type="chain", name="Handle Booking Query")
     async def _handle_booking_query(self, query: str) -> str:
         """Handle booking-related queries using the booking agent."""
         deps = TravelDeps(query=query, query_type="booking")
@@ -112,6 +116,7 @@ class TravelAgentSystem:
             
         return result.data
     
+    @traceable(run_type="chain", name="Handle Recommendation Query")
     async def _handle_recommendation_query(self, query: str) -> str:
         """Handle recommendation-related queries using the recommendation agent."""
         deps = TravelDeps(query=query, query_type="recommendation")
@@ -129,6 +134,7 @@ class TravelAgentSystem:
             
         return result.data
     
+    @traceable(run_type="chain", name="Handle General Query")
     async def _handle_general_query(self, query: str) -> str:
         """Handle general travel-related queries using the general agent."""
         deps = TravelDeps(query=query, query_type="general")
@@ -146,6 +152,7 @@ class TravelAgentSystem:
             
         return result.data
 
+    @traceable(run_type="tool", name="Search Flights")
     async def _search_flights(
         self,
         ctx: RunContext[TravelDeps], 
@@ -157,6 +164,7 @@ class TravelAgentSystem:
         flights_data = get_flights(departure_city, arrival_city, departure_date)
         return [FlightDetails(**flight_data) for flight_data in flights_data]
 
+    @traceable(run_type="tool", name="Search Hotels")
     async def _search_hotels(
         self,
         ctx: RunContext[TravelDeps], 
@@ -169,6 +177,7 @@ class TravelAgentSystem:
         hotels_data = get_hotels(city, check_in_date, check_out_date, guests)
         return [HotelDetails(**hotel_data) for hotel_data in hotels_data]
 
+    @traceable(run_type="tool", name="Search Destinations")
     async def _search_destinations(
         self,
         ctx: RunContext[TravelDeps], 
@@ -178,6 +187,7 @@ class TravelAgentSystem:
         destinations_data = get_destinations(preferences)
         return [DestinationRecommendation(**dest_data) for dest_data in destinations_data]
 
+    @traceable(run_type="tool", name="Search Travel Info")
     async def _search_travel_info(
         self,
         ctx: RunContext[TravelDeps], 
