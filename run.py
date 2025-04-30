@@ -6,14 +6,14 @@ This script should be run from the project root directory.
 
 import os
 import sys
+import asyncio
 
-# Add the project root to the Python path
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+# Add the project root directory to the Python path
+project_root = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, project_root)
 
 # Import and run the main function
 from src.main import main
-import asyncio
 
 if __name__ == "__main__":
-    # Run the main function
     asyncio.run(main()) 

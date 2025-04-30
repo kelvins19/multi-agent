@@ -1,50 +1,48 @@
-from pydantic import BaseModel, Field
-from typing import List, Dict, Any, Literal
-from datetime import datetime
+"""Base models for the travel system."""
+from typing import Dict, Any, List, Optional, Union
+from pydantic import BaseModel
 
-class Failed(BaseModel):
-    """Model for failed operations."""
-    reason: str = Field(..., description="The reason for the failure")
-
-# Travel-specific models
 class TravelQuery(BaseModel):
-    """Travel query model."""
-    text: str = Field(..., description="The travel query text")
-    query_type: Literal["booking", "recommendation", "general"] = Field(..., description="Type of travel query")
-    metadata: Dict[str, Any] = Field(default_factory=dict, description="Additional metadata about the query")
-    created_at: datetime = Field(default_factory=datetime.utcnow, description="Query creation timestamp")
-
-class TravelResponse(BaseModel):
-    """Travel response model."""
-    answer: str = Field(..., description="The generated answer")
-    sources: List[Dict[str, Any]] = Field(default_factory=list, description="Source documents used for the answer")
-    metadata: Dict[str, Any] = Field(default_factory=dict, description="Additional metadata about the response")
-    created_at: datetime = Field(default_factory=datetime.utcnow, description="Response creation timestamp")
+    """A travel-related query."""
+    text: str
+    query_type: Optional[str] = None  # "booking", "recommendation", or "general"
+    metadata: Dict[str, Any] = {}
 
 class FlightDetails(BaseModel):
-    """Flight booking details."""
-    flight_number: str = Field(..., description="Flight number")
-    departure_city: str = Field(..., description="Departure city")
-    arrival_city: str = Field(..., description="Arrival city")
-    departure_time: str = Field(..., description="Departure time")
-    arrival_time: str = Field(..., description="Arrival time")
-    price: float = Field(..., description="Flight price")
-    airline: str = Field(..., description="Airline name")
+    """Details for a flight booking."""
+    flight_number: str
+    departure_city: str
+    arrival_city: str
+    departure_time: str
+    arrival_time: str
+    price: float
+    airline: str
 
 class HotelDetails(BaseModel):
-    """Hotel booking details."""
-    hotel_name: str = Field(..., description="Hotel name")
-    city: str = Field(..., description="City where the hotel is located")
-    check_in_date: str = Field(..., description="Check-in date")
-    check_out_date: str = Field(..., description="Check-out date")
-    price_per_night: float = Field(..., description="Price per night")
-    rating: float = Field(..., description="Hotel rating")
-    amenities: List[str] = Field(default_factory=list, description="Hotel amenities")
+    """Details for a hotel booking."""
+    hotel_name: str
+    city: str
+    check_in_date: str
+    check_out_date: str
+    price_per_night: float
+    rating: float
+    amenities: List[str]
 
 class DestinationRecommendation(BaseModel):
-    """Travel destination recommendation."""
-    destination: str = Field(..., description="Recommended destination")
-    description: str = Field(..., description="Description of the destination")
-    best_time_to_visit: str = Field(..., description="Best time to visit")
-    attractions: List[str] = Field(default_factory=list, description="Popular attractions")
-    estimated_cost: str = Field(..., description="Estimated cost for a trip") 
+    """A destination recommendation."""
+    destination: str
+    description: str
+    best_time_to_visit: str
+    attractions: List[str]
+    estimated_cost: str
+
+class Failed(BaseModel):
+    """A failed response."""
+    error: str
+    details: Dict[str, Any] = {}
+
+class TravelResponse(BaseModel):
+    """A response to a travel query."""
+    answer: str
+    sources: List[Dict[str, Any]] = []
+    metadata: Dict[str, Any] = {} 

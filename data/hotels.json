@@ -1,0 +1,18 @@
+[
+  {
+    "id": "HOTEL001",
+    "name": "Grand Hotel Paris",
+    "location": "Paris, France",
+    "price_range": "$$$$",
+    "description": "Luxury hotel in the heart of Paris",
+    "available_dates": ["2024-06-15", "2024-06-16", "2024-06-17"]
+  },
+  {
+    "id": "HOTEL002",
+    "name": "Boutique Hotel Montmartre",
+    "location": "Paris, France",
+    "price_range": "$$$",
+    "description": "Charming boutique hotel in Montmartre",
+    "available_dates": ["2024-06-15", "2024-06-16", "2024-06-17"]
+  }
+] 

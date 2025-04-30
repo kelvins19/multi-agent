@@ -1,0 +1,20 @@
+[
+  {
+    "id": "ACC001",
+    "name": "Grand Hotel Paris",
+    "location": "Paris, France",
+    "price_per_night": 200,
+    "rating": 4.5,
+    "amenities": ["WiFi", "Pool", "Spa", "Restaurant"],
+    "available_dates": ["2024-06-15", "2024-06-16", "2024-06-17"]
+  },
+  {
+    "id": "ACC002",
+    "name": "Tokyo Tower Hotel",
+    "location": "Tokyo, Japan",
+    "price_per_night": 150,
+    "rating": 4.2,
+    "amenities": ["WiFi", "Restaurant", "Gym"],
+    "available_dates": ["2024-06-15", "2024-06-16", "2024-06-17"]
+  }
+] 

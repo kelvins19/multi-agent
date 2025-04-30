@@ -1,0 +1,24 @@
+[
+  {
+    "id": "FL001",
+    "from": "New York",
+    "to": "Paris",
+    "airline": "Air France",
+    "price": 850,
+    "duration": "7h 30m",
+    "departure_time": "10:00",
+    "arrival_time": "17:30",
+    "available_dates": ["2024-06-15", "2024-06-16", "2024-06-17"]
+  },
+  {
+    "id": "FL002",
+    "from": "London",
+    "to": "Tokyo",
+    "airline": "Japan Airlines",
+    "price": 1200,
+    "duration": "11h 45m",
+    "departure_time": "09:30",
+    "arrival_time": "21:15",
+    "available_dates": ["2024-06-15", "2024-06-16", "2024-06-17"]
+  }
+] 

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "TRANS001",
+    "type": "Flight",
+    "from": "New York",
+    "to": "Paris",
+    "price": 800,
+    "duration": "7 hours",
+    "airline": "Air France",
+    "available_dates": ["2024-06-15", "2024-06-16", "2024-06-17"]
+  },
+  {
+    "id": "TRANS002",
+    "type": "Train",
+    "from": "Paris",
+    "to": "London",
+    "price": 100,
+    "duration": "2 hours",
+    "operator": "Eurostar",
+    "available_dates": ["2024-06-15", "2024-06-16", "2024-06-17"]
+  }
+] 

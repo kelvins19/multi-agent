@@ -1,0 +1,18 @@
+[
+  {
+    "id": "ACT001",
+    "name": "Seine River Cruise",
+    "location": "Paris, France",
+    "price": 30,
+    "description": "Scenic boat tour along the Seine River",
+    "available_dates": ["2024-06-15", "2024-06-16", "2024-06-17"]
+  },
+  {
+    "id": "ACT002",
+    "name": "Paris Food Tour",
+    "location": "Paris, France",
+    "price": 75,
+    "description": "Guided tour of Parisian cuisine and culture",
+    "available_dates": ["2024-06-15", "2024-06-16", "2024-06-17"]
+  }
+] 

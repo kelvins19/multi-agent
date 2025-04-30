@@ -1,0 +1,18 @@
+[
+  {
+    "id": "REST001",
+    "name": "Le Bistrot Parisien",
+    "location": "Paris, France",
+    "price_range": "$$$",
+    "description": "Traditional French bistro serving classic cuisine",
+    "available_dates": ["2024-06-15", "2024-06-16", "2024-06-17"]
+  },
+  {
+    "id": "REST002",
+    "name": "Café de la Paix",
+    "location": "Paris, France",
+    "price_range": "$$$$",
+    "description": "Historic café known for its elegant atmosphere",
+    "available_dates": ["2024-06-15", "2024-06-16", "2024-06-17"]
+  }
+] 
