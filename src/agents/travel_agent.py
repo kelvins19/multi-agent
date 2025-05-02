@@ -81,6 +81,11 @@ class TravelAgentSystem:
             deps_type=TravelDeps
         )
         
+        # Initialize message history for each agent
+        self.booking_history = []
+        self.recommendation_history = []
+        self.general_history = []
+        
         # Register tools for each agent
         self.booking_agent.tool(self._search_flights)
         self.booking_agent.tool(self._search_hotels)
@@ -102,10 +107,17 @@ class TravelAgentSystem:
     async def _handle_booking_query(self, query: str) -> str:
         """Handle booking-related queries using the booking agent."""
         deps = TravelDeps(query=query, query_type="booking")
-        result = await self.booking_agent.run(user_prompt=query, deps=deps)
+        result = await self.booking_agent.run(
+            user_prompt=query, 
+            deps=deps,
+            message_history=self.booking_history
+        )
         
         if result is None:
             return "I apologize, but I couldn't process your booking request at this time."
+            
+        # Update message history with new messages
+        self.booking_history.extend(result.new_messages())
             
         usage = result.usage()
         if usage is not None:
@@ -130,10 +142,17 @@ class TravelAgentSystem:
     async def _handle_recommendation_query(self, query: str) -> str:
         """Handle recommendation-related queries using the recommendation agent."""
         deps = TravelDeps(query=query, query_type="recommendation")
-        result = await self.recommendation_agent.run(user_prompt=query, deps=deps)
+        result = await self.recommendation_agent.run(
+            user_prompt=query, 
+            deps=deps,
+            message_history=self.recommendation_history
+        )
         
         if result is None:
             return "I apologize, but I couldn't process your recommendation request at this time."
+            
+        # Update message history with new messages
+        self.recommendation_history.extend(result.new_messages())
             
         usage = result.usage()
         if usage is not None:
@@ -158,10 +177,17 @@ class TravelAgentSystem:
     async def _handle_general_query(self, query: str) -> str:
         """Handle general travel-related queries using the general agent."""
         deps = TravelDeps(query=query, query_type="general")
-        result = await self.general_agent.run(user_prompt=query, deps=deps)
+        result = await self.general_agent.run(
+            user_prompt=query, 
+            deps=deps,
+            message_history=self.general_history
+        )
         
         if result is None:
             return "I apologize, but I couldn't process your query at this time."
+            
+        # Update message history with new messages
+        self.general_history.extend(result.new_messages())
             
         usage = result.usage()
         if usage is not None:

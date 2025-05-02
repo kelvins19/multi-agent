@@ -53,6 +53,9 @@ class SingleTravelAgent:
             deps_type=TravelDeps
         )
         
+        # Initialize message history
+        self.message_history = []
+        
         # Register all tools
         self.agent.tool(self._search_flights)
         self.agent.tool(self._search_hotels)
@@ -68,10 +71,17 @@ class SingleTravelAgent:
     async def process_query(self, query: str) -> str:
         """Process any travel-related query using the single agent."""
         deps = TravelDeps(query=query)
-        result = await self.agent.run(user_prompt=query, deps=deps)
+        result = await self.agent.run(
+            user_prompt=query, 
+            deps=deps,
+            message_history=self.message_history
+        )
         
         if result is None:
             return "I apologize, but I couldn't process your request at this time."
+            
+        # Update message history with new messages
+        self.message_history.extend(result.new_messages())
             
         usage = result.usage()
         if usage is not None:
