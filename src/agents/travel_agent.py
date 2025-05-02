@@ -1,12 +1,9 @@
 from typing import List, Dict, Any, Union, Optional, Literal
 from pydantic_ai import Agent, RunContext
 from pydantic_ai.models.openai import OpenAIModel
-from pydantic_ai.usage import Usage, UsageLimits
 from pydantic import BaseModel, Field
 import os
-from dotenv import load_dotenv
 from langsmith import traceable
-from langsmith.wrappers import wrap_openai
 
 from src.models.base import (
     TravelQuery, 
@@ -18,14 +15,6 @@ from src.models.base import (
 )
 from src.config import settings
 from src.data.mock_data import get_flights, get_hotels, get_destinations
-from src.agents.base import BaseAgent
-from src.data.knowledge_base import (
-    FLIGHT_DATA, 
-    HOTEL_DATA, 
-    DESTINATION_DATA, 
-    TRAVEL_TIPS, 
-    LOCAL_ATTRACTIONS
-)
 from src.retrievers.simple_retriever import SimpleRetriever
 
 class TravelDeps(BaseModel):
