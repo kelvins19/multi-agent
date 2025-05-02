@@ -1,6 +1,7 @@
 from typing import List, Dict, Any, Optional
 from pydantic_ai import Agent, RunContext
 from pydantic_ai.models.openai import OpenAIModel
+from pydantic_ai.usage import Usage, UsageLimits
 from pydantic import BaseModel, Field
 import os
 from dotenv import load_dotenv
@@ -63,7 +64,7 @@ class SingleTravelAgent:
         self.agent.tool(self._get_travel_tips)
         self.agent.tool(self._get_local_attractions)
     
-    @traceable(run_type="chain", name="Process Travel Query")
+    @traceable(run_type="chain", name="Single -- Process Travel Query")
     async def process_query(self, query: str) -> str:
         """Process any travel-related query using the single agent."""
         deps = TravelDeps(query=query)
@@ -78,6 +79,16 @@ class SingleTravelAgent:
             print(f"Input Tokens: {usage.request_tokens}")
             print(f"Output Tokens: {usage.response_tokens}")
             print(f"Total Tokens: {usage.total_tokens}")
+            
+            # Return a new response object with token usage
+            return {
+                "choices": [{"message": {"role": "assistant", "content": result.data}}],
+                "usage_metadata": {
+                    "input_tokens": usage.request_tokens,
+                    "output_tokens": usage.response_tokens,
+                    "total_tokens": usage.total_tokens
+                }
+            }
             
         return result.data
 

@@ -114,6 +114,16 @@ class TravelAgentSystem:
             print(f"Output Tokens: {usage.response_tokens}")
             print(f"Total Tokens: {usage.total_tokens}")
             
+            # Return a new response object with token usage
+            return {
+                "choices": [{"message": {"role": "assistant", "content": result.data}}],
+                "usage_metadata": {
+                    "input_tokens": usage.request_tokens,
+                    "output_tokens": usage.response_tokens,
+                    "total_tokens": usage.total_tokens
+                }
+            }
+            
         return result.data
     
     @traceable(run_type="chain", name="Multi -- Handle Recommendation Query")
@@ -132,6 +142,16 @@ class TravelAgentSystem:
             print(f"Output Tokens: {usage.response_tokens}")
             print(f"Total Tokens: {usage.total_tokens}")
             
+            # Return a new response object with token usage
+            return {
+                "choices": [{"message": {"role": "assistant", "content": result.data}}],
+                "usage_metadata": {
+                    "input_tokens": usage.request_tokens,
+                    "output_tokens": usage.response_tokens,
+                    "total_tokens": usage.total_tokens
+                }
+            }
+            
         return result.data
     
     @traceable(run_type="chain", name="Multi -- Handle General Query")
@@ -149,6 +169,16 @@ class TravelAgentSystem:
             print(f"Input Tokens: {usage.request_tokens}")
             print(f"Output Tokens: {usage.response_tokens}")
             print(f"Total Tokens: {usage.total_tokens}")
+            
+            # Return a new response object with token usage
+            return {
+                "choices": [{"message": {"role": "assistant", "content": result.data}}],
+                "usage_metadata": {
+                    "input_tokens": usage.request_tokens,
+                    "output_tokens": usage.response_tokens,
+                    "total_tokens": usage.total_tokens
+                }
+            }
             
         return result.data
 

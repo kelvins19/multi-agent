@@ -11,11 +11,22 @@ async def main():
     # Load knowledge base
     knowledge_base = load_knowledge_base()
     
-    # Initialize the travel agent system
-    # travel_agent = TravelAgentSystem(knowledge_base)
-    travel_agent = SingleTravelAgent()
+    # Let user choose between single or multi-agent system
+    while True:
+        agent_type = input("\nChoose agent type (single/multi): ").lower()
+        if agent_type in ["single", "multi"]:
+            break
+        print("Please enter either 'single' or 'multi'")
     
-    print("Welcome to the Travel Agent System!")
+    # Initialize the appropriate travel agent
+    if agent_type == "single":
+        travel_agent = SingleTravelAgent()
+        print("\nInitialized single travel agent system")
+    else:
+        travel_agent = TravelAgentSystem(knowledge_base)
+        print("\nInitialized multi-agent travel system")
+    
+    print("\nWelcome to the Travel Agent System!")
     print("You can ask questions about flights, hotels, destinations, and general travel information.")
     print("Type 'exit' to quit.")
     
@@ -26,7 +37,12 @@ async def main():
         
         print("\nProcessing your query...")
         response = await travel_agent.process_query(query)
-        print(f"\nResponse: {response}")
+        # Extract only the content from the response
+        if isinstance(response, dict) and "choices" in response:
+            content = response["choices"][0]["message"]["content"]
+            print(f"\nResponse: {content}")
+        else:
+            print(f"\nResponse: {response}")
 
 def load_knowledge_base() -> Dict[str, List[Dict[str, Any]]]:
     """Load the knowledge base from JSON files."""
