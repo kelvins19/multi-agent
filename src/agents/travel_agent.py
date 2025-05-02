@@ -87,7 +87,7 @@ class TravelAgentSystem:
         self.recommendation_agent.tool(self._search_destinations)
         self.general_agent.tool(self._search_travel_info)
     
-    @traceable(run_type="chain", name="Process Travel Query")
+    @traceable(run_type="chain", name="Multi -- Process Travel Query")
     async def process_query(self, query: str) -> str:
         """Process a user query by determining its type and routing it to the appropriate handler."""
         # Determine query type based on keywords and context
@@ -98,7 +98,7 @@ class TravelAgentSystem:
         else:
             return await self._handle_general_query(query)
     
-    @traceable(run_type="chain", name="Handle Booking Query")
+    @traceable(run_type="chain", name="Multi -- Handle Booking Query")
     async def _handle_booking_query(self, query: str) -> str:
         """Handle booking-related queries using the booking agent."""
         deps = TravelDeps(query=query, query_type="booking")
@@ -116,7 +116,7 @@ class TravelAgentSystem:
             
         return result.data
     
-    @traceable(run_type="chain", name="Handle Recommendation Query")
+    @traceable(run_type="chain", name="Multi -- Handle Recommendation Query")
     async def _handle_recommendation_query(self, query: str) -> str:
         """Handle recommendation-related queries using the recommendation agent."""
         deps = TravelDeps(query=query, query_type="recommendation")
@@ -134,7 +134,7 @@ class TravelAgentSystem:
             
         return result.data
     
-    @traceable(run_type="chain", name="Handle General Query")
+    @traceable(run_type="chain", name="Multi -- Handle General Query")
     async def _handle_general_query(self, query: str) -> str:
         """Handle general travel-related queries using the general agent."""
         deps = TravelDeps(query=query, query_type="general")
@@ -152,7 +152,7 @@ class TravelAgentSystem:
             
         return result.data
 
-    @traceable(run_type="tool", name="Search Flights")
+    @traceable(run_type="tool", name="Multi -- Search Flights")
     async def _search_flights(
         self,
         ctx: RunContext[TravelDeps], 
@@ -164,7 +164,7 @@ class TravelAgentSystem:
         flights_data = get_flights(departure_city, arrival_city, departure_date)
         return [FlightDetails(**flight_data) for flight_data in flights_data]
 
-    @traceable(run_type="tool", name="Search Hotels")
+    @traceable(run_type="tool", name="Multi -- Search Hotels")
     async def _search_hotels(
         self,
         ctx: RunContext[TravelDeps], 
@@ -177,7 +177,7 @@ class TravelAgentSystem:
         hotels_data = get_hotels(city, check_in_date, check_out_date, guests)
         return [HotelDetails(**hotel_data) for hotel_data in hotels_data]
 
-    @traceable(run_type="tool", name="Search Destinations")
+    @traceable(run_type="tool", name="Multi -- Search Destinations")
     async def _search_destinations(
         self,
         ctx: RunContext[TravelDeps], 
@@ -187,7 +187,7 @@ class TravelAgentSystem:
         destinations_data = get_destinations(preferences)
         return [DestinationRecommendation(**dest_data) for dest_data in destinations_data]
 
-    @traceable(run_type="tool", name="Search Travel Info")
+    @traceable(run_type="tool", name="Multi -- Search Travel Info")
     async def _search_travel_info(
         self,
         ctx: RunContext[TravelDeps], 
@@ -200,6 +200,7 @@ class TravelAgentSystem:
         }
 
     # Booking agent tools
+    @traceable(run_type="tool", name="Multi -- Book Flight")
     async def _book_flight(self, details: FlightDetails) -> Dict[str, Any]:
         """Book a flight with the given details."""
         # In a real system, this would call an external API or service
@@ -209,6 +210,7 @@ class TravelAgentSystem:
             "flight_details": details.dict()
         }
     
+    @traceable(run_type="tool", name="Multi -- Book Hotel")
     async def _book_hotel(self, details: HotelDetails) -> Dict[str, Any]:
         """Book a hotel with the given details."""
         # In a real system, this would call an external API or service
@@ -218,6 +220,7 @@ class TravelAgentSystem:
             "hotel_details": details.dict()
         }
     
+    @traceable(run_type="tool", name="Multi -- Get Booking Status")
     async def _get_booking_status(self, booking_id: str) -> Dict[str, Any]:
         """Get the status of a booking."""
         # In a real system, this would call an external API or service
@@ -227,6 +230,7 @@ class TravelAgentSystem:
         }
     
     # Recommendation agent tools
+    @traceable(run_type="tool", name="Multi -- Get Destination Recommendations")
     async def _get_destination_recommendations(self, preferences: Dict[str, Any]) -> List[DestinationRecommendation]:
         """Get destination recommendations based on user preferences."""
         # Use the retriever to find matching destinations
@@ -250,6 +254,7 @@ class TravelAgentSystem:
         
         return recommendations
     
+    @traceable(run_type="tool", name="Multi -- Get Travel Tips")
     async def _get_travel_tips(self, destination: str) -> List[str]:
         """Get travel tips for a specific destination."""
         # Use the retriever to find relevant tips
@@ -264,6 +269,7 @@ class TravelAgentSystem:
         
         return tips if tips else ["No specific tips available for this destination."]
     
+    @traceable(run_type="tool", name="Multi -- Get Local Attractions")
     async def _get_local_attractions(self, destination: str) -> List[Dict[str, Any]]:
         """Get local attractions for a specific destination."""
         # Use the retriever to find relevant attractions

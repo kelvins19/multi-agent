@@ -1,5 +1,6 @@
 import asyncio
 from src.agents.travel_agent import TravelAgentSystem
+from src.agents.single_travel_agent import SingleTravelAgent
 from src.models.base import TravelQuery
 import os
 import json
@@ -11,7 +12,8 @@ async def main():
     knowledge_base = load_knowledge_base()
     
     # Initialize the travel agent system
-    travel_agent = TravelAgentSystem(knowledge_base)
+    # travel_agent = TravelAgentSystem(knowledge_base)
+    travel_agent = SingleTravelAgent()
     
     print("Welcome to the Travel Agent System!")
     print("You can ask questions about flights, hotels, destinations, and general travel information.")
